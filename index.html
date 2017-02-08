@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="styles/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="styles/bootstrap-theme.min.css" />
+    <script src="scripts/threeMan.js"></script>
+    <script src="scripts/global/jquery.min.js"></script>
+    <script src="scripts/global/jquery-ui-1.11.4.min.js"></script>
+    <script src="scripts/global/bootstrap.min.js"></script>
+  </head>
+  <body role=document>
+    <div class="grizzlyImage"></div>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <span class="navbar-brand">Three Man</span>
+        </div>
+      </div>
+    </nav>
+    <br/>
+    <br/>
+    <br/>
+    <div class="container" role="main" id="characterSheet">
+      <div class="row" id="details">
+        <div class="col-sm-12">
+          <div class="panel-group">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                    Roll the dice
+                    <span style="float: Right;"><a href="tests.html">Test Runner</a></span>
+                </h3>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <button id="diceRollButton" type="button" class="btn btn-primary" onclick="roll()">
+                      Roll the Dice!
+                    </button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <span id="rollResults"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
