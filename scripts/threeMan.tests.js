@@ -6,6 +6,10 @@ describe('The Three Man Game - ', function (){
 	it('must exist - ', function(){
     expect(game !== undefined).toBe(true);
 	});
-  
+
+  it('must have a roll method - ', function(){
+    expect(game.roll).toBeDefined();
+  });
+
   // it ('', function() {});
 });
