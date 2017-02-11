@@ -117,22 +117,19 @@ describe('The Three Man Game - ', function (){
     });
   });
 
-  describe('has a table object - ', function(){
-    it('that is defined', function(){
-      expect(game.table).toBeDefined();
-    });
+  describe('has a game object - ', function(){
     it('that has an array of players', function(){
-      expect(game.table().players).toBeDefined();
+      expect(game.players).toBeDefined();
     });
     it('that has a currentPlayer property', function(){
-      expect(game.table().currentPlayer).toBeDefined();
+      expect(game.currentPlayer).toBeDefined();
     });
   });
 
   describe('the game play - ', function(){
     beforeEach(function() {
       game = new window.threeManGame.game();
-      game.table().currentPlayer(game.table().players()[0]);
+      game.currentPlayer(game.players()[0]);
       spyOn(game, 'isSuccessfulRoll').and.callThrough();
     });
 
@@ -144,7 +141,7 @@ describe('The Three Man Game - ', function (){
       expect(game.rollResult.isSuccessful).toBe(false);
       expect(game.rollResult.message).toBe('');
       expect(game.isSuccessfulRoll).toHaveBeenCalledWith([2,4]);
-      expect(game.table().currentPlayer).not.toBe(game.table().players()[0]);
+      expect(game.currentPlayer).not.toBe(game.players()[0]);
     });
 
     it('player rolls the dice and gets a seven to the right, person to the right gets a drink', function(){
@@ -155,8 +152,8 @@ describe('The Three Man Game - ', function (){
       expect(game.rollResult.isSuccessful).toBe(true);
       expect(game.rollResult.message).toBe('Seven to the Right ');
       expect(game.isSuccessfulRoll).toHaveBeenCalledWith([6,1]);
-      expect(game.table().currentPlayer()).toBe(game.table().players()[0]);
-      expect(game.table().players()[1].drinks()).toBe(1);
+      expect(game.currentPlayer()).toBe(game.players()[0]);
+      expect(game.players()[1].drinks()).toBe(1);
     });
 
     it('player rolls the dice and gets an eleven to the left, person to the left gets a drink', function(){
@@ -167,8 +164,8 @@ describe('The Three Man Game - ', function (){
       expect(game.rollResult.isSuccessful).toBe(true);
       expect(game.rollResult.message).toBe('Eleven to the Left ');
       expect(game.isSuccessfulRoll).toHaveBeenCalledWith([6,5]);
-      expect(game.table().currentPlayer()).toBe(game.table().players()[0]);
-      expect(game.table().players()[2].drinks()).toBe(1);
+      expect(game.currentPlayer()).toBe(game.players()[0]);
+      expect(game.players()[2].drinks()).toBe(1);
     });
 
     it('player rolls the dice and gets a social, everyone gets a drink', function(){
@@ -179,10 +176,10 @@ describe('The Three Man Game - ', function (){
       expect(game.rollResult.isSuccessful).toBe(true);
       expect(game.rollResult.message).toBe('Social ');
       expect(game.isSuccessfulRoll).toHaveBeenCalledWith([1,4]);
-      expect(game.table().currentPlayer()).toBe(game.table().players()[0]);
-      expect(game.table().players()[0].drinks()).toBe(1);
-      expect(game.table().players()[1].drinks()).toBe(1);
-      expect(game.table().players()[2].drinks()).toBe(1);
+      expect(game.currentPlayer()).toBe(game.players()[0]);
+      expect(game.players()[0].drinks()).toBe(1);
+      expect(game.players()[1].drinks()).toBe(1);
+      expect(game.players()[2].drinks()).toBe(1);
     });
 
     describe('three man rules - ', function(){
@@ -194,49 +191,49 @@ describe('The Three Man Game - ', function (){
         expect(game.declaredThreeMan()).toBe(null);
         spyOn(game, 'chooseThreeMan').and.callThrough();
         var result = game.isSuccessfulRoll([1,3]);
-        expect(game.table().currentPlayer()).toBe(game.table().players()[0]);
+        expect(game.currentPlayer()).toBe(game.players()[0]);
         expect(game.chooseThreeMan).toHaveBeenCalled();
-        expect(game.declaredThreeMan()).toBe(game.table().players()[1]);
-        expect(game.table().players()[1].drinks()).toBe(1);
+        expect(game.declaredThreeMan()).toBe(game.players()[1]);
+        expect(game.players()[1].drinks()).toBe(1);
       });
 
       it('player rolls the dice and gets a three man while not being three man, the person who is threeman gets a drink', function(){
         rollresults = [1,3]
         spyOn(game, 'rollDice').and.callFake(function(){return rollresults.pop();});
-        game.declaredThreeMan(game.table().players()[1]);
+        game.declaredThreeMan(game.players()[1]);
         var result = game.isSuccessfulRoll([1,3]);
         expect(game.rollResult.isSuccessful).toBe(true);
         expect(game.rollResult.message).toBe('Three Man ');
         expect(game.isSuccessfulRoll).toHaveBeenCalledWith([1,3]);
-        expect(game.table().currentPlayer()).toBe(game.table().players()[0]);
-        expect(game.table().players()[0].drinks()).toBe(0);
-        expect(game.table().players()[1].drinks()).toBe(1);
+        expect(game.currentPlayer()).toBe(game.players()[0]);
+        expect(game.players()[0].drinks()).toBe(0);
+        expect(game.players()[1].drinks()).toBe(1);
       });
 
       it('player rolls the dice and gets two threes while not being three man, the person who is threeman gets two drinks for three man and seven for the doubles results', function(){
         rollresults = [3,3,5,2]
         spyOn(game, 'rollDice').and.callFake(function(){return rollresults.pop();});
-        game.declaredThreeMan(game.table().players()[1]);
+        game.declaredThreeMan(game.players()[1]);
         var result = game.isSuccessfulRoll([3,3]);
         expect(game.rollResult.isSuccessful).toBe(true);
         expect(game.rollResult.message).toBe('Three Man Doubles ');
         expect(game.isSuccessfulRoll).toHaveBeenCalledWith([3,3]);
-        expect(game.table().currentPlayer()).toBe(game.table().players()[0]);
-        expect(game.table().players()[0].drinks()).toBe(0);
-        //expect(game.table().players()[1].drinks()).toBe(2);
+        expect(game.currentPlayer()).toBe(game.players()[0]);
+        expect(game.players()[0].drinks()).toBe(0);
+        //expect(game.players()[1].drinks()).toBe(2);
       });
 
       it('player rolls the dice and gets a one and a two while not being three man, the person who is threeman gets two drinks', function(){
         rollresults = [1,2]
         spyOn(game, 'rollDice').and.callFake(function(){return rollresults.pop();});
-        game.declaredThreeMan(game.table().players()[1]);
+        game.declaredThreeMan(game.players()[1]);
         var result = game.isSuccessfulRoll([1,2]);
         expect(game.rollResult.isSuccessful).toBe(true);
         expect(game.rollResult.message).toBe('Three Man x2 ');
         expect(game.isSuccessfulRoll).toHaveBeenCalledWith([1,2]);
-        expect(game.table().currentPlayer()).toBe(game.table().players()[0]);
-        expect(game.table().players()[0].drinks()).toBe(0);
-        expect(game.table().players()[1].drinks()).toBe(2);
+        expect(game.currentPlayer()).toBe(game.players()[0]);
+        expect(game.players()[0].drinks()).toBe(0);
+        expect(game.players()[1].drinks()).toBe(2);
       });
 
       it('player rolls the dice and gets a one and a two while not being three man and three man has not been chosen the roller gets two drinks', function(){
@@ -246,19 +243,19 @@ describe('The Three Man Game - ', function (){
         expect(game.rollResult.isSuccessful).toBe(true);
         expect(game.rollResult.message).toBe('Three Man x2 ');
         expect(game.isSuccessfulRoll).toHaveBeenCalledWith([1,2]);
-        expect(game.table().currentPlayer()).toBe(game.table().players()[0]);
-        expect(game.table().players()[0].drinks()).toBe(2);
-        expect(game.table().players()[1].drinks()).toBe(0);
+        expect(game.currentPlayer()).toBe(game.players()[0]);
+        expect(game.players()[0].drinks()).toBe(2);
+        expect(game.players()[1].drinks()).toBe(0);
       });
 
       it('player rolls the dice and gets a three man and is the the declared three man they choose a new three man', function(){
         rollresults = [1,3]
-        game.declaredThreeMan(game.table().currentPlayer());
+        game.declaredThreeMan(game.currentPlayer());
         spyOn(game, 'rollDice').and.callFake(function(){return rollresults.pop();});
         var result = game.isSuccessfulRoll([1,3]);
-        expect(game.table().currentPlayer()).toBe(game.table().players()[0]);        
-        expect(game.declaredThreeMan()).toBe(game.table().players()[1]);
-        expect(game.table().players()[1].drinks()).toBe(1);
+        expect(game.currentPlayer()).toBe(game.players()[0]);
+        expect(game.declaredThreeMan()).toBe(game.players()[1]);
+        expect(game.players()[1].drinks()).toBe(1);
       });
     });
 
@@ -271,7 +268,7 @@ describe('The Three Man Game - ', function (){
     //     spyOn(game, 'chooseDoublesTarget').and.callThrough();
     //     var result = game.isSuccessfulRoll([4,4]);
     //     expect(game.chooseDoublesTarget).toHaveBeenCalled();
-    //     expect(game.doublesTarget()).toBe(game.table().players()[1]);
+    //     expect(game.doublesTarget()).toBe(game.players()[1]);
     //   });
     //   it ('player rolls doubles, gives dice to single opponent, they dont roll doubles, and drink sum', function() {
     //     rollresults = [4,4,6,1]
@@ -281,7 +278,7 @@ describe('The Three Man Game - ', function (){
     //     spyOn(game, 'chooseDoublesTarget').and.callThrough();
     //     var result = game.isSuccessfulRoll([4,4]);
     //     expect(game.chooseDoublesTarget).toHaveBeenCalled();
-    //     expect(game.doublesTarget()).toBe(game.table().players()[1]);
+    //     expect(game.doublesTarget()).toBe(game.players()[1]);
     //     expect(game.doublesTarget().drinks()).toBe(7);
     //   });
     // });

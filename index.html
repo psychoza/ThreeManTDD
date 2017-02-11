@@ -34,9 +34,8 @@
                 </h3>
               </div>
               <div class="panel-body">
-
                 <div class="row">
-                  <div class="col-sm-12">
+                  <div class="col-sm-12 center">
                     <button id="diceRollButton" type="button" class="btn btn-primary" data-bind="click: roll">
                       <img src="./images/playing-dices.png">&nbsp;
                       Roll the Dice!
@@ -45,24 +44,23 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-sm-12">
-                    <img id="rollOne" src="">&nbsp;<img id="rollTwo" src="">
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-sm-12">
-                    <span id="rollResults"></span>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-sm-12" data-bind="with: table">
-                    <table>
+                  <div class="col-sm-6">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>
+                            Player Name
+                          </th>
+                          <th>
+                            Drinks
+                          </th>
+                        </tr>
+                      </thead>
                       <tbody data-bind="foreach: players">
                         <tr data-bind="attr: {id: identity}">
                           <td>
-                            <span data-bind="text: firstName"></span>
+                            <span data-bind="text: firstName"></span>&nbsp;
+                            <img data-bind="visible: $data === $parent.declaredThreeMan()" src="./images/3beer.png">
                           </td>
                           <td>
                             <span data-bind="text: drinks">
@@ -71,14 +69,12 @@
                       </tbody>
                     </table>
                   </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-sm-12" data-bind="with: declaredThreeMan">
-                    <h4>Current Three Man:<h4/><br>
-                    <span data-bind="text: firstName"></span>
+                  <div class="col-sm-6" data-bind="with: declaredThreeMan">
+                    <h4>Current Three Man</h4>&nbsp;<span data-bind="text: firstName"></span>
                   </div>
                 </div>
+
+                <br/><br/>
 
                 <div class="row">
                   <div class="col-sm-12" id="rollExtendedResults">
@@ -95,7 +91,7 @@
      $(function(){
        game = new window.threeManGame.game();
        ko.applyBindings(game, $('#characterSheet').get(0));
-       $('#'+game.table().currentPlayer().identity).addClass('alert').addClass('alert-success');
+       $('#'+game.currentPlayer().identity).addClass('alert').addClass('alert-success');
      });
  </script>
   </body>
