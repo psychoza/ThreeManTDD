@@ -5,6 +5,7 @@
         self.currentPlayer = ko.observable(null);
         self.declaredThreeMan = ko.observable(null);
         self.doublesTarget = ko.observable(null);
+        self.extendedMessage = "";
 
         var playerOne = {
           identity: 1,
@@ -49,34 +50,34 @@
         };
 
         self.isSuccessfulRoll = function(rolls) {
-          var result = {}, isSuccessful = false, message = '', extendedMessage = '';
+          var result = {}, isSuccessful = false, message = '';
           result.rolls = rolls;
 
-          extendedMessage += self.currentPlayer().firstName + '<br/>';
+          self.extendedMessage = self.currentPlayer().firstName + '<br/>';
 
           if(rolls.contains(3)) {
             isSuccessful = true;
 
             if (!self.threeManHasBeenChosen() || self.declaredThreeMan() === self.currentPlayer()) {
               self.chooseThreeMan();
-              extendedMessage += 'chose ' + self.declaredThreeMan().firstName + ' as the new Three Man <br/>';
+              self.extendedMessage += 'Chose ' + self.declaredThreeMan().firstName + ' as the new Three Man <br/>';
             }
 
             self.addDrinkToThreeMan();
-            extendedMessage += 'Gave Three Man a drink <br/>';
+            self.extendedMessage += 'Gave Three Man a drink <br/>';
 
             if (rolls[0] === 3 && rolls[1] === 3) {
               self.addDrinkToThreeMan();
-              extendedMessage += 'Gave Three Man a drink <br/>';
+              self.extendedMessage += 'Gave Three Man a drink <br/>';
             }
 
             message += 'Three Man ';
           }
           if(rolls.length === 2 && rolls[0] === rolls[1]) {
             isSuccessful = true;
-            extendedMessage += 'Rolled doubles <br/>';
+            self.extendedMessage += 'Rolled doubles <br/>';
             self.doublesTarget(self.chooseDoublesTarget());
-            self.rollDoublesBattle(extendedMessage);
+            self.rollDoublesBattle();
             message += 'Doubles '
           }
           if(rolls.contains(1) && rolls.contains(2)) {
@@ -84,35 +85,34 @@
             if (!self.threeManHasBeenChosen()) {
               self.addDrinkToThePlayer(self.currentPlayer());
               self.addDrinkToThePlayer(self.currentPlayer());
-              extendedMessage += 'Gave themselves two drinks! <br/>';
+              self.extendedMessage += 'Gave themselves two drinks! <br/>';
             } else {
               self.addDrinkToThreeMan();
               self.addDrinkToThreeMan();
-              extendedMessage += 'Gave Three Man two drinks <br/>';
+              self.extendedMessage += 'Gave Three Man two drinks <br/>';
             }
             message += 'Three Man x2 '
           }
           if(rolls.contains(1) && rolls.contains(4)) {
             isSuccessful = true;
             self.addDrinkToEveryone();
-            extendedMessage += 'Gave the table a drink <br/>';
+            self.extendedMessage += 'Gave the table a drink <br/>';
             message += 'Social '
           }
           if(rolls[0] + rolls[1] === 7) {
             isSuccessful = true;
             self.addDrinkToTheRight();
-            extendedMessage += 'Gave a drink to the right <br/>';
+            self.extendedMessage += 'Gave a drink to the right <br/>';
             message += 'Seven to the Right '
           }
           if(rolls[0] + rolls[1] === 11) {
             isSuccessful = true;
             self.addDrinkToTheLeft();
-            extendedMessage += 'Gave a drink to the left <br/>';
+            self.extendedMessage += 'Gave a drink to the left <br/>';
             message += 'Eleven to the Left '
           }
           result.isSuccessful = isSuccessful;
           result.message = message;
-          result.extendedMessage = extendedMessage;
           self.rollResult = result;
           self.updateUI();
         };
@@ -170,7 +170,7 @@
           if ( self.rollResult.isSuccessful) {
             $('#diceRollButton').addClass('btn-success').removeClass('btn-primary').removeClass('btn-danger');
             $('#diceRollButton').html(buttonHtml + self.rollResult.message);
-            $('#rollExtendedResults').html(self.rollResult.extendedMessage);
+            $('#rollExtendedResults').html(self.extendedMessage);
           }
           else {
             var currentPosition = self.currentPlayer().position;
@@ -185,7 +185,7 @@
 
             $('#'+self.currentPlayer().identity).addClass('alert').addClass('alert-success');
             $('#diceRollButton').addClass('btn-danger').removeClass('btn-primary').removeClass('btn-success');
-            $('#rollExtendedResults').html(self.rollResult.extendedMessage + 'Passed the dice');
+            $('#rollExtendedResults').html(self.extendedMessage + 'Passed the dice');
             $('#diceRollButton').html(buttonHtml + 'You rolled jack shit.');
           }
         };
@@ -209,10 +209,13 @@
             return players[currentPosition + 1];
         };
 
-        self.rollDoublesBattle = function(extendedMessage){
+        self.rollDoublesBattle = function(){
           var doublesHaveBeenRolled = true;
           var doublesMultiplier = 1;
           var doublesBattlers = [self.currentPlayer(), self.doublesTarget()]
+
+          self.extendedMessage += self.currentPlayer().firstName + ' gave the dice to ' + self.doublesTarget().firstName + '<br/>';
+
           var drinkReceiver;
           while (doublesHaveBeenRolled && doublesMultiplier < 5) {
             drinkReceiver = doublesBattlers[doublesMultiplier % 2];
@@ -224,10 +227,10 @@
               doublesMultiplier++;
               // continue play here
               // increase multiplier
-              extendedMessage += drinkReceiver + 'rolled doubles back! (' + rolls[0] + ' ' + rolls[1] + ')<br/>';
+              self.extendedMessage += drinkReceiver.firstName + ' rolled doubles back! (' + rolls[0] + ' ' + rolls[1] + ') The multiplier is now ' + doublesMultiplier + '<br/>';
             } else {
               drinkReceiver.drinks(drinkReceiver.drinks() + (rolls.sum() * doublesMultiplier))
-              extendedMessage += drinkReceiver + 'rolled ' + rolls[0] + ' and ' + rolls[1] + ' getting them ' + (rolls.sum() * doublesMultiplier) + 'drinks!<br/>';
+              self.extendedMessage += drinkReceiver.firstName + ' rolled ' + rolls[0] + ' and ' + rolls[1] + ' getting them ' + (rolls.sum() * doublesMultiplier) + ' drinks!<br/>';
               doublesHaveBeenRolled = false;
             }
           }
