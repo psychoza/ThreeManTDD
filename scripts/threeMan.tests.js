@@ -267,7 +267,7 @@ describe('The Three Man Game - ', function (){
     //     expect(game.doublesTarget).toBeDefined();
     //     spyOn(game, 'chooseDoublesTarget').and.callThrough();
     //     var result = game.isSuccessfulRoll([4,4]);
-    //     expect(game.chooseDoublesTarget).toHaveBeenCalled();
+    //     expect(game.chooseDoublesTarget).toHaveBeenCalled();g
     //     expect(game.doublesTarget()).toBe(game.players()[1]);
     //   });
     //   it ('player rolls doubles, gives dice to single opponent, they dont roll doubles, and drink sum', function() {
@@ -283,5 +283,6 @@ describe('The Three Man Game - ', function (){
     //   });
     // });
     // it ('', function() {});
+    //
   });
 });
