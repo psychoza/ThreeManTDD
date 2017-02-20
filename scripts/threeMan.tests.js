@@ -30,13 +30,6 @@ describe('The Three Man Game - ', function (){
     it('that is defined', function(){
       expect(game.isSuccessfulRoll).toBeDefined();
     });
-
-    // it('that returns true when a 1 and a 1 are rolled', function(){
-    //   var result = game.isSuccessfulRoll([1,1]);
-    //   expect(game.rollResult.isSuccessful).toBe(true);
-    //   expect(game.rollResult.message).toBe('Doubles ');
-    //   expect(game.isSuccessfulRoll).toHaveBeenCalledWith([1,1]);
-    // });
     it('that returns true when a 1 and a 2 are rolled', function(){
       var result = game.isSuccessfulRoll([1,2]);
       expect(game.rollResult.isSuccessful).toBe(true);
@@ -259,30 +252,29 @@ describe('The Three Man Game - ', function (){
       });
     });
 
-    // describe('doubles rules - ', function(){
-    //   it('player rolls the dice and gets a doubles, gives dice to a single opponent', function(){
-    //     rollresults = [4,4]
-    //     spyOn(game, 'rollDice').and.callFake(function(){return rollresults.pop();});
-    //     expect(game.chooseDoublesTarget).toBeDefined();
-    //     expect(game.doublesTarget).toBeDefined();
-    //     spyOn(game, 'chooseDoublesTarget').and.callThrough();
-    //     var result = game.isSuccessfulRoll([4,4]);
-    //     expect(game.chooseDoublesTarget).toHaveBeenCalled();g
-    //     expect(game.doublesTarget()).toBe(game.players()[1]);
-    //   });
-    //   it ('player rolls doubles, gives dice to single opponent, they dont roll doubles, and drink sum', function() {
-    //     rollresults = [4,4,6,1]
-    //     spyOn(game, 'rollDice').and.callFake(function(){return rollresults.pop();});
-    //     expect(game.chooseDoublesTarget).toBeDefined();
-    //     expect(game.doublesTarget).toBeDefined();
-    //     spyOn(game, 'chooseDoublesTarget').and.callThrough();
-    //     var result = game.isSuccessfulRoll([4,4]);
-    //     expect(game.chooseDoublesTarget).toHaveBeenCalled();
-    //     expect(game.doublesTarget()).toBe(game.players()[1]);
-    //     expect(game.doublesTarget().drinks()).toBe(7);
-    //   });
-    // });
+    describe('doubles rules - ', function(){
+      it('player rolls the dice and gets a doubles, gives dice to a single opponent', function(){
+        rollresults = [4,4]
+        spyOn(game, 'rollDice').and.callFake(function(){return rollresults.pop();});
+        expect(game.chooseDoublesTarget).toBeDefined();
+        expect(game.doublesTarget).toBeDefined();
+        spyOn(game, 'chooseDoublesTarget').and.callThrough();
+        var result = game.isSuccessfulRoll([4,4]);
+        expect(game.chooseDoublesTarget).toHaveBeenCalled();g
+        expect(game.doublesTarget()).toBe(game.players()[1]);
+      });
+      it ('player rolls doubles, gives dice to single opponent, they dont roll doubles, and drink sum', function() {
+        rollresults = [4,4,6,1]
+        spyOn(game, 'rollDice').and.callFake(function(){return rollresults.pop();});
+        expect(game.chooseDoublesTarget).toBeDefined();
+        expect(game.doublesTarget).toBeDefined();
+        spyOn(game, 'chooseDoublesTarget').and.callThrough();
+        var result = game.isSuccessfulRoll([4,4]);
+        expect(game.chooseDoublesTarget).toHaveBeenCalled();
+        expect(game.doublesTarget()).toBe(game.players()[1]);
+        expect(game.doublesTarget().drinks()).toBe(7);
+      });
+    });
     // it ('', function() {});
-    //
   });
 });
